@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
 import { useShoppingCart } from "../context/ShoppingVartContext"
-import StoreItem from "./StoreItem";
-import { IProductos } from "../interfaces/IProductos";
 import { Button, Stack } from "react-bootstrap";
 import { formarCurrency } from "../utilities/formatCurrency";
+import { useSelector } from "react-redux";
+import { IProductos } from "../interfaces/IProductos";
 
 type CartItemProps = {
     id:number
@@ -12,14 +11,8 @@ type CartItemProps = {
 
 export function CartItem({id, quantity}: CartItemProps){
     const {removeFromCart} = useShoppingCart();
-    const [articulos, setArticulos] = useState<IProductos[]>([]);
+    const articulos:IProductos[] = useSelector((state: any) => state.productos);
 
-
-  useEffect(() => {
-    fetch('https://fakestoreapi.com/products')
-      .then((response) => response.json())
-      .then((data) => setArticulos(data));
-  }, []);
 
   const item = articulos.find(i => i.id === id);
   if(item == null) return null

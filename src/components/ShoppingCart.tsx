@@ -3,7 +3,7 @@ import { useShoppingCart } from "../context/ShoppingVartContext";
 import { CartItem } from "./CartItem";
 import { formarCurrency } from "../utilities/formatCurrency";
 import { IProductos } from "../interfaces/IProductos";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 type ShoppingCartProps = {
     isOpen:boolean
@@ -11,14 +11,8 @@ type ShoppingCartProps = {
 
 export function ShoppingCart({isOpen}:ShoppingCartProps){
     const {closeCart, cartItems} = useShoppingCart();
-    const [articulos, setArticulos] = useState<IProductos[]>([]);
+    const articulos:IProductos[] = useSelector((state: any) => state.productos);
 
-
-    useEffect(() => {
-      fetch('https://fakestoreapi.com/products')
-        .then((response) => response.json())
-        .then((data) => setArticulos(data));
-    }, []);
     return <Offcanvas show={isOpen} onHide={closeCart} placement="end">
         <Offcanvas.Header closeButton>
             <Offcanvas.Title>Cart</Offcanvas.Title>
